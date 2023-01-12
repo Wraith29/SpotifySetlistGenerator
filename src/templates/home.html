@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Setlist Generator</title>
+  <script>
+    console.log("Loading...");
+    function submit() {
+      console.log("Button Pressed");
+
+      const inpElem = document.querySelector("#artist-name-input");
+      const val = inpElem.value;
+
+      window.location.href = `/login?artistName=${val}`
+    }
+
+  </script>
+</head>
+
+<body>
+  <h1>Setlist Generator</h1>
+  <input type="text" placeholder="Artist Name" id="artist-name-input" />
+  <button onClick="submit()">Generate Playlist!</button>
+</body>
+
+</html>
