@@ -1,5 +1,4 @@
 import datetime
-import json
 import requests
 
 from dotenv import load_dotenv, get_key
