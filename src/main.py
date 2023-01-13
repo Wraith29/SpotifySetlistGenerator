@@ -1,4 +1,5 @@
 import datetime
+import json
 import requests
 
 from dotenv import load_dotenv, get_key
@@ -32,6 +33,9 @@ def filter_setlists(
     tour_name = None
 
     while tour_name is None:
+        if idx >= len(setlists):
+            raise ValueError("Artist has no recent tour, or no tour name.")
+
         if "tour" not in setlists[idx].keys():
             idx += 1
             continue
@@ -73,7 +77,7 @@ def filter_tracks(sl_tracks: list[str], tracks: list[Track]) -> list[Track]:
     return result
 
 
-def generate_playlist() -> None:
+def generate_playlist() -> str:
     sl_api_key = get_key(".env", "SETLIST_API_KEY")
     sl_api = SetlistApi(sl_api_key)
 
@@ -82,7 +86,11 @@ def generate_playlist() -> None:
 
     setlists = sl_api.get_setlists(artist_id)
 
-    setlist_info = filter_setlists(setlists)
+    try:
+        setlist_info = filter_setlists(setlists)
+    except ValueError as ve:
+        raise ve
+
     tour_name = None
     idx = 0
 
@@ -166,9 +174,11 @@ def auth_view() -> str:
     }, json=True)
 
     sp_api.set_token(res.json()["access_token"])
-    playlist_id = generate_playlist()
-
-    return render_template("created.html", id=playlist_id)
+    try:
+        playlist_id = generate_playlist()
+        return render_template("created.html", id=playlist_id)
+    except ValueError as ve:
+        return render_template("error.html", msg=ve.args[0])
 
 
 def main() -> Flask:
