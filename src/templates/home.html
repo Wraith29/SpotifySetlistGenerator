@@ -4,17 +4,27 @@
 <head>
   <title>Setlist Generator</title>
   <script>
-    console.log("Loading...");
     function submit() {
-      console.log("Button Pressed");
-
       const inpElem = document.querySelector("#artist-name-input");
       const val = inpElem.value;
 
       window.location.href = `/login?artistName=${val}`
     }
-
   </script>
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    input#artist-name-input {
+      text-align: center;
+    }
+  </style>
 </head>
 
 <body>

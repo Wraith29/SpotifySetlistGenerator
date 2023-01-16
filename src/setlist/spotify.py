@@ -84,22 +84,16 @@ class SpotifyApi:
 
         response = self.make_get_request(url)
 
-        albums = []
-        for album in response["items"]:
-            albums.append(album["id"])
-
-        return albums
+        return [album["id"] for album in response["items"]]
 
     def album_get_tracks(self, album_id: str) -> list[Track]:
         url = self.base_url + f"albums/{album_id}/tracks"
 
         response = self.make_get_request(url)
 
-        tracks = []
-        for track in response["items"]:
-            tracks.append(Track(track["id"], track["name"]))
-
-        return tracks
+        return [
+            Track(track["id"], track["name"]) for track in response["items"]
+        ]
 
     def playlist_create(self, band_name: str, tour_name: str) -> str:
         url = self.base_url + f"users/{self.id}/playlists"

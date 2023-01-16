@@ -4,11 +4,32 @@
 
 <head>
   <title>Setlist Generator</title>
+  <script src="https://open.spotify.com/embed-podcast/iframe-api/v1" async></script>
+  <script>
+    window.onSpotifyIframeApiReady = (IFrameApi) => {
+      const elem = document.querySelector("#iframe-embed");
+      const options = {
+        uri: "{{id}}",
+        height: "800"
+      };
+      IFrameApi.createController(elem, options, _ => { });
+    };
+  </script>
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+  </style>
 </head>
 
 <body>
   <h1>Playlist Created</h1>
-  <p>Click <a href="{{id}}">here</a> to have a look :) </p>
+  <div id="iframe-embed"></div>
 </body>
 
 </html>

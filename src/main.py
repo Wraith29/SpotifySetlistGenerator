@@ -1,3 +1,4 @@
+import json
 import datetime
 import requests
 
@@ -65,13 +66,16 @@ def get_setlist_tracks(setlists: list[dict[str, str]]) -> list[str]:
 
 
 def filter_tracks(sl_tracks: list[str], tracks: list[Track]) -> list[Track]:
+    sl_tracks = list(map(lambda s: s.lower().strip(), sl_tracks))
+
     result = []
     incl = []
 
     for track in tracks:
-        if track.name in sl_tracks and track.name not in incl:
+        tr_name = track.name.lower().strip()
+        if tr_name in sl_tracks and tr_name not in incl:
             result.append(track)
-            incl.append(track.name)
+            incl.append(tr_name)
 
     return result
 
@@ -117,7 +121,7 @@ def generate_playlist() -> str:
         for track in sp_api.album_get_tracks(album_id):
             artist_tracks.append(track)
 
-    artist_tracks = set(artist_tracks)
+    artist_tracks = list(set(artist_tracks))
 
     tracks = filter_tracks(setlist_tracks, artist_tracks)
 
